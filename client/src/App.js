@@ -5,6 +5,8 @@ import CategoryPage from './CategoryPage';
 import HomePage from './Homepage';
 import QuestionPage from './QuestionPage';
 import QuestionListAdmin from "./components/QuestionListAdmin";
+import EditQuestionPage from "./EditQuestionPage"
+
 const { Title } = Typography;
 const { Header, Footer } = Layout;
 
@@ -17,6 +19,7 @@ const App = () => {
                 <Route path="/admin/category" element={<CategoryPage />} />
                 <Route path="/admin/question" element={<QuestionPage />} />
                 <Route path="/admin/questionlist" element={<QuestionListAdmin />} />
+                <Route path="/admin/question/:id" element={<EditQuestionPage/>} />
             </Routes>
         </Router>
     );

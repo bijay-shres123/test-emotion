@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Card, Tooltip, Typography, Radio } from 'antd';
+import { Card, Tooltip, Typography, Radio, Redirect } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../actions/categories';
-import { useHistory } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const { Meta } = Card;
 const { Paragraph } = Typography;
 
-function Question({ question, setSelectedId, onAnswerSelect, setEditId }) {
-    const history = useHistory();
+function Question({ question, setSelectedId, onAnswerSelect, setEditId, history }) {
+
   const dispatch = useDispatch();
   const [expand, setExpand] = useState(true);
   const [value, setValue] = useState(0);
+  const [redirect, setRedirect] = useState(false); // State to control redirection
 
   useEffect(() => {
     dispatch(getCategories());
@@ -42,7 +43,8 @@ function Question({ question, setSelectedId, onAnswerSelect, setEditId }) {
   };
 
   const handleEditClick = (questionId) => {
-    history.push(`/admin/question/${questionId}`);
+    // Set redirect to true to trigger redirection
+    setRedirect(true);
   };
 
   const cardActions = [
@@ -55,6 +57,8 @@ function Question({ question, setSelectedId, onAnswerSelect, setEditId }) {
 
   return (
     <>
+      {/* Redirect to the edit page if redirect is true */}
+      {redirect && <Navigate to={`/admin/question/${question._id}`} />}
       <Card actions={cardActions}>
         <Meta title={getCategoryName()} />
         <Meta title={question.text} />

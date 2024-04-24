@@ -1,26 +1,48 @@
-// Question
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import styles from './styles.js';
-import { Card, Form, Input, Typography, Button } from 'antd';
+import { Card, Form, Input, Typography, Button, Select, Space, InputNumber } from 'antd';
 import { useDispatch } from 'react-redux';
-import { createQuestion } from './actions/questions.js';
-import { Select, Space, InputNumber } from 'antd';
+import { createQuestion, getQuestions } from './actions/questions.js';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { useParams } from 'react-router-dom'; // Import useParams hook
 
 const { Title } = Typography;
 
-function QuestionPage(selectedId) {
+function EditQuestionPage() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getQuestions());
+  }, [dispatch]); // Make sure to include 'dispatch' in the dependency array if it's used inside the effect
+
   const [categories, setCategories] = useState([]);
+  const new_question_array = ( useSelector((state) =>state.questions.questions))
+  console.log(new_question_array)
+
+
+
   const question = useSelector((state) => {
-    if (selectedId && Array.isArray(state.questions)) {
-        console.log("hrere")
-      return state.questions.find((question) => question._id === selectedId);
+    if (id && Array.isArray(new_question_array)) {
+      return new_question_array.find((que) => que._id === id) || null;
     } else {
-        console.log("down")
       return null;
     }
   });
+  
+  
+  
+  
+ 
+  useEffect(() => {
+    if (question) {
+      // Set field values for the text and category fields
+      form.setFieldsValue({
+        text: question.text,
+        category: question.category,
+      });
+    }
+  }, [question]); // Include 'question' in the dependency array
 
   useEffect(() => {
     // Fetch categories data from your backend API
@@ -35,25 +57,14 @@ function QuestionPage(selectedId) {
       });
   }, []); // Run this effect only once on component mount
 
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const onSubmit = (formValues) => {
     dispatch(createQuestion(formValues));
   };
 
-  useEffect(() => {
-    if (question) {
-      form.setFieldValue(question);
-    }
-  }, []);
   return (
     <Card
-      style={styles.formCard}
-      title={
-        <Title level={4} style={styles.formTitle}>
-          Add Question
-        </Title>
-      }
+      title={<Title level={4}>Edit Question</Title>}
     >
       <Form
         form={form}
@@ -62,16 +73,12 @@ function QuestionPage(selectedId) {
         layout="horizontal"
         size="middle"
         onFinish={onSubmit}
+        initialValues={{ text: '', category: '', answers: [] }}
       >
         <Form.Item name="text" label="Question" rules={[{ required: true }]}>
           <Input allowClear />
         </Form.Item>
-        <Form.Item
-          name="category"
-          label="Category"
-          rules={[{ required: true }]}
-        >
-          {/* You can use a Select component or any other appropriate component for selecting the category */}
+        <Form.Item name="category" label="Category" rules={[{ required: true }]}>
           <Select>
             {categories.map((category) => (
               <Select.Option key={category._id} value={category._id}>
@@ -79,27 +86,17 @@ function QuestionPage(selectedId) {
               </Select.Option>
             ))}
           </Select>
-          <h3>
-            Follow following order to add answers: Always, Usually, Sometimes,
-            Rarely, Never
-          </h3>
-          <h3>Value should limit min:1 to max:5</h3>
         </Form.Item>
         <Form.List name="answers">
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name, ...restField }) => (
-                <Space
-                  key={key}
-                  style={{ display: 'flex', marginBottom: 8 }}
-                  align="baseline"
-                >
+                <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                   <Form.Item
                     {...restField}
                     name={[name, 'text']}
                     label="Answer Text"
                     rules={[{ required: true }]}
-                    style={{ marginBottom: '8px' }} // Adjust the margin bottom as needed
                   >
                     <Input allowClear />
                   </Form.Item>
@@ -108,28 +105,20 @@ function QuestionPage(selectedId) {
                     name={[name, 'score']}
                     label="Score"
                     rules={[{ required: true }]}
-                    style={{ marginBottom: '8px' }} // Adjust the margin bottom as needed
                   >
                     <InputNumber min={1} max={5} />
                   </Form.Item>
-
                   <MinusCircleOutlined onClick={() => remove(name)} />
                 </Space>
               ))}
               <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                   Add Answer
                 </Button>
               </Form.Item>
             </>
           )}
         </Form.List>
-
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Submit
@@ -140,4 +129,4 @@ function QuestionPage(selectedId) {
   );
 }
 
-export default QuestionPage;
+export default EditQuestionPage;
