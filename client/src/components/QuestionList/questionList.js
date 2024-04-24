@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Spin, Form, Button } from 'antd';
-import Question from '../Question';
+import QuestionHome from '../Question/QuestionHome';
 import { useSelector } from 'react-redux';
 
 function QuestionList({ setSelectedId }) {
@@ -48,7 +48,7 @@ function QuestionList({ setSelectedId }) {
       <Row gutter={[48, 32]}>
         {questions.map((question, index) => (
           <Col key={question._id} lg={24} xl={12} xxl={8}>
-            <Question
+            <QuestionHome
               setSelectedId={setSelectedId}
               question={question}
               selectedAnswerIndex={selectedAnswers[index]}

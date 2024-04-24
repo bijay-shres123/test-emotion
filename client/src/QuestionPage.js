@@ -2,19 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './styles.js';
-import { Card, Form, Input, Typography, Button } from 'antd';
+import { Layout,Card, Form, Input, Typography, Button, Select, Space, InputNumber, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { createQuestion } from './actions/questions.js';
-import { Select, Space, InputNumber } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
-function QuestionPage(selectedId) {
+function QuestionPage({ selectedId }) {
+  // Destructure props to get selectedId
   const [categories, setCategories] = useState([]);
   const question = useSelector((state) => {
     if (selectedId && Array.isArray(state.questions)) {
-      console.log('hrere');
+      console.log('here');
       return state.questions.find((question) => question._id === selectedId);
     } else {
       console.log('down');
@@ -37,69 +37,69 @@ function QuestionPage(selectedId) {
 
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const onSubmit = (formValues) => {
-    dispatch(createQuestion(formValues));
-  };
 
+  // Initialize form with question data if it exists
   useEffect(() => {
     if (question) {
-      form.setFieldValue(question);
+      form.setFieldsValue(question); // Use setFieldsValue to set form values
     }
-  }, []);
+  }, [question]); // Trigger effect when question changes
+
+  const onSubmit = async (formValues) => {
+    try {
+      // Dispatch the createQuestion action
+      await dispatch(createQuestion(formValues));
+
+      // Show a success message if the creation is successful
+      message.success('Question created successfully');
+
+      form.resetFields();
+    } catch (error) {
+      // Handle any errors here, if needed
+      console.error('Error creating question:', error);
+      // You can also show an error message if creation fails
+      message.error('Failed to create question');
+    }
+  };
+
   return (
-    <Card
-      style={styles.formCard}
-      title={
-        <Title level={4} style={styles.formTitle}>
-          Add Question
-        </Title>
-      }
-    >
+    <Layout style = {styles.layout}>
+    <Card title={<Title level={4}>Add Question</Title>} style = {styles.formCard} >
       <Form
         form={form}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
         layout="horizontal"
-        size="middle"
         onFinish={onSubmit}
       >
-        <Form.Item name="text" label="Question" rules={[{ required: true }]}>
+        <Form.Item name="text" label="Question" rules={[{ required: true, message: 'Please enter a question' }]}>
           <Input allowClear />
         </Form.Item>
         <Form.Item
           name="category"
           label="Category"
-          rules={[{ required: true }]}
+          rules={[{ required: true, message: 'Please select a category' }]}
         >
-          {/* You can use a Select component or any other appropriate component for selecting the category */}
-          <Select>
+          <Select placeholder="Select a category">
             {categories.map((category) => (
               <Select.Option key={category._id} value={category._id}>
                 {category.name}
               </Select.Option>
             ))}
           </Select>
-          <h3>
-            Follow following order to add answers: Always, Usually, Sometimes,
-            Rarely, Never
-          </h3>
-          <h3>Value should limit min:1 to max:5</h3>
         </Form.Item>
+        <h3>Follow this order to add answers: Always, Usually, Sometimes, Rarely, Never</h3>
+        <h3>Value should be between 1 and 5</h3>
         <Form.List name="answers">
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name, ...restField }) => (
-                <Space
-                  key={key}
-                  style={{ display: 'flex', marginBottom: 8 }}
-                  align="baseline"
-                >
+                <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                   <Form.Item
                     {...restField}
                     name={[name, 'text']}
                     label="Answer Text"
-                    rules={[{ required: true }]}
-                    style={{ marginBottom: '8px' }}
+                    rules={[{ required: true, message: 'Please enter an answer' }]}
                   >
                     <Select placeholder="Select an option">
                       <Select.Option value="Always">Always</Select.Option>
@@ -113,29 +113,21 @@ function QuestionPage(selectedId) {
                     {...restField}
                     name={[name, 'score']}
                     label="Score"
-                    rules={[{ required: true }]}
-                    style={{ marginBottom: '8px' }} // Adjust the margin bottom as needed
+                    rules={[{ required: true, message: 'Please enter a score' }]}
                   >
                     <InputNumber min={1} max={5} />
                   </Form.Item>
-
                   <MinusCircleOutlined onClick={() => remove(name)} />
                 </Space>
               ))}
               <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                   Add Answer
                 </Button>
               </Form.Item>
             </>
           )}
         </Form.List>
-
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Submit
@@ -143,7 +135,10 @@ function QuestionPage(selectedId) {
         </Form.Item>
       </Form>
     </Card>
+    </Layout>
   );
 }
+  
+
 
 export default QuestionPage;

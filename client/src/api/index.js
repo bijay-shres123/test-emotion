@@ -13,3 +13,4 @@ const urlquestion  = "http://localhost:5001/questions"
 export const fetchQuestions =()=> axios.get(urlquestion)
 export const createQuestion =(question)=> axios.post(urlquestion, question)
 export const updateQuestion =(id,question)=> axios.patch(`${urlquestion}/${id}`, question)
+export const deleteQuestion =(id)=> axios.delete(`${urlquestion}/${id}`);

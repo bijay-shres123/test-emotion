@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Card, Form, Input, Typography, Button, Select, Space, InputNumber } from 'antd';
+import { Card, Form, Input, Typography, Button, Select, Space, InputNumber, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateQuestion, getQuestions } from './actions/questions.js';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -59,10 +59,22 @@ function EditQuestionPage() {
   }, []); // Run this effect only once on component mount
 
   const [form] = Form.useForm();
+
   const onSubmit = (formValues) => {
-    // console.log(formValues)
-    dispatch(updateQuestion(id, formValues));
+    // Dispatch the updateQuestion action
+    dispatch(updateQuestion(id, formValues))
+      .then(() => {
+        // Display a success message
+        message.success('Question updated successfully');
+        // Navigate back to the previous screen
+      
+      })
+      .catch((error) => {
+        console.error('Error updating question:', error);
+        message.error('Failed to update question');
+      });
   };
+  
   return (
     <Card
       title={<Title level={4}>Edit Question</Title>}

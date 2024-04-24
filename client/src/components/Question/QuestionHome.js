@@ -66,16 +66,7 @@ function Question({ question, setSelectedId, onAnswerSelect, setEditId, history 
   };
 
   const cardActions = [
-    <Tooltip placement="top" title="Edit">
-      <EditOutlined
-        onClick={() => handleEditClick(question._id)}
-      />
-    </Tooltip>,
-    <Tooltip placement="top" title="Delete">
-    <DeleteTwoTone twoToneColor="red"
-      onClick={handleDelete}
-    />
-  </Tooltip>,
+    
   ];
 
   return (
