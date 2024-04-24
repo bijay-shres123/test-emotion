@@ -1,23 +1,37 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import mongoose from 'mongoose'; // Import mongoose
+import storyRoutes from './routes/stories.js'
+import categoryRoutes from './routes/categories.js'
+import questionRoutes from './routes/questions.js'
 
-const db = require('./db')
-const movieRouter = require('./routes/movie-router')
+const app = express();
 
-const app = express()
-const apiPort = 5000
-
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({limit: "32mb", extended: true }))
+app.use(bodyParser.urlencoded({limit: "32mb", extended: true }))
 app.use(cors())
-app.use(bodyParser.json())
 
-db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+//Route for storyRoute
+app.use("/stories",storyRoutes)
+//Route for categoryRoutes
+app.use("/categories",categoryRoutes)
+//Route for QuestionRoutes
+app.use("/questions",questionRoutes)
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+const MONGO_URI = "mongodb+srv://user2024:test123@cluster0.hsmnvk0.mongodb.net/TestQuiz?retryWrites=true&w=majority&appName=Cluster0"
 
-app.use('/api', movieRouter)
+const PORT = process.env.PORT || 5001;
 
-app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
+const connectDB = async() =>{
+    try{
+        await mongoose.connect(MONGO_URI),{ useNewUrlParser: true, useUnifiedTopology: true };
+        app.listen(PORT,()=> console.log(`Server running on port :${PORT}`));
+    }catch(err){
+        console.log("Connectino to the MongoDB failed",err.message)
+    }
+}
+
+connectDB();
+mongoose.connection.on("open",()=> console.log("Conncection to database has been established successfully"))
+mongoose.connection.on("error",(err)=> console.log(err))

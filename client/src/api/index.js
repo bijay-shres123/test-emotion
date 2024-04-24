@@ -1,21 +1,14 @@
-import axios from 'axios'
+import axios from "axios";
 
-const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
-})
+const urlstory  = "http://localhost:5001/stories"
 
-export const insertMovie = payload => api.post(`/movie`, payload)
-export const getAllMovies = () => api.get(`/movies`)
-export const updateMovieById = (id, payload) => api.put(`/movie/${id}`, payload)
-export const deleteMovieById = id => api.delete(`/movie/${id}`)
-export const getMovieById = id => api.get(`/movie/${id}`)
+export const fetchStories =()=> axios.get(urlstory)
+export const createStory =(story)=> axios.post(urlstory, story)
 
-const apis = {
-    insertMovie,
-    getAllMovies,
-    updateMovieById,
-    deleteMovieById,
-    getMovieById,
-}
+const urlcategory  = "http://localhost:5001/categories"
+export const fetchCategories =()=> axios.get(urlcategory)
+export const createCategory =(category)=> axios.post(urlcategory, category)
 
-export default apis
+const urlquestion  = "http://localhost:5001/questions"
+export const fetchQuestions =()=> axios.get(urlquestion)
+export const createQuestion =(question)=> axios.post(urlquestion, question)
