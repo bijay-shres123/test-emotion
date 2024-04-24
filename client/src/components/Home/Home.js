@@ -16,9 +16,7 @@ const Home = () =>{
     },[dispatch])
     return(
         <Layout style = {styles.layout}>
-            {/* <Sider width={400}>
-                <StoryForm/>
-            </Sider> */}
+            
             <Content style = {styles.content}>
                 <QuestionList/>
             </Content>

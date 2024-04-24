@@ -14,11 +14,11 @@ const HomePage= ()=>{
             <Header style={styles.header}>
                 <Image style={styles.image} width="45" preview="false" src={Logo}/>
                 &nbsp;
-                <Title style={styles.title}>Test</Title>
+                <Title style={styles.title}>MindWell</Title>
             </Header>
             <Home />
             <Footer style={styles.footer}>
-                <span>Test@2024</span>
+                <span>©2024 MindWell</span>
             </Footer>
         </Layout>
     )

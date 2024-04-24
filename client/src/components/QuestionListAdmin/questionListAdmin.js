@@ -4,7 +4,10 @@ import { Row, Col, Spin } from "antd";
 import Question from '../Question';
 import { useSelector } from "react-redux";
 import { getQuestions } from '../../actions/questions.js';
+import Navbar from '../Layout/Navbar.js';
+import { Typography } from 'antd';
 
+const { Title } = Typography;
 
 function QuestionListAdmin({ setSelectedId }) {
   const [editId, setEditId]= useState(null);
@@ -29,7 +32,8 @@ function QuestionListAdmin({ setSelectedId }) {
 
   return (
     <div>
-      <h2>All the Questions. Edit or Delete as required</h2>
+      <Navbar/>
+      <Title level={2} style={{ textAlign: 'center', marginBottom: '20px' }}>All the Questions. Edit or Delete as required</Title>
       {questions.map((question, index) => (
         <Row
           key={question._id}
@@ -44,6 +48,7 @@ function QuestionListAdmin({ setSelectedId }) {
           {/* Add more columns if needed */}
         </Row>
       ))}
+      
     </div>
   );
 }

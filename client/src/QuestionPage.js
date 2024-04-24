@@ -6,7 +6,7 @@ import { Layout,Card, Form, Input, Typography, Button, Select, Space, InputNumbe
 import { useDispatch } from 'react-redux';
 import { createQuestion } from './actions/questions.js';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-
+import Navbar from './components/Layout/Navbar.js';
 const { Title } = Typography;
 
 function QuestionPage({ selectedId }) {
@@ -63,8 +63,10 @@ function QuestionPage({ selectedId }) {
   };
 
   return (
-    <Layout style = {styles.layout}>
-    <Card title={<Title level={4}>Add Question</Title>} style = {styles.formCard} >
+    <>
+  <Navbar />
+  <Layout style={styles.layout}>
+    <Card title={<Title level={4}>Add a Question</Title>} style={styles.formCard}>
       <Form
         form={form}
         labelCol={{ span: 6 }}
@@ -88,46 +90,49 @@ function QuestionPage({ selectedId }) {
             ))}
           </Select>
         </Form.Item>
-        <h3>Follow this order to add answers: Always, Usually, Sometimes, Rarely, Never</h3>
-        <h3>Value should be between 1 and 5</h3>
-        <Form.List name="answers">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'text']}
-                    label="Answer Text"
-                    rules={[{ required: true, message: 'Please enter an answer' }]}
-                  >
-                    <Select placeholder="Select an option">
-                      <Select.Option value="Always">Always</Select.Option>
-                      <Select.Option value="Usually">Usually</Select.Option>
-                      <Select.Option value="Sometimes">Sometimes</Select.Option>
-                      <Select.Option value="Rarely">Rarely</Select.Option>
-                      <Select.Option value="Never">Never</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'score']}
-                    label="Score"
-                    rules={[{ required: true, message: 'Please enter a score' }]}
-                  >
-                    <InputNumber min={1} max={5} />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                  Add Answer
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
+        <div style={styles.formList}> {/* Fixed typo in 'style' */}
+          <h3>Follow this order to add answers: Always, Usually, Sometimes, Rarely, Never</h3>
+          <h3>Value should be between 1 and 5</h3>
+          <Form.List name="answers" style={{ padding: '5px' }}>
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'text']}
+                      label="Answer"
+                      rules={[{ required: true, message: 'Please enter an answer' }]}
+                    >
+                      <Select placeholder="Select an option" style={{margin:'0px 20px'}}>
+                        <Select.Option value="Always">Always</Select.Option>
+                        <Select.Option value="Usually">Usually</Select.Option>
+                        <Select.Option value="Sometimes">Sometimes</Select.Option>
+                        <Select.Option value="Rarely">Rarely</Select.Option>
+                        <Select.Option value="Never">Never</Select.Option>
+                      </Select>
+                    </Form.Item>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'score']}
+                      label="Score"
+                      rules={[{ required: true, message: 'Please enter a score' }]}
+                     
+                    >
+                      <InputNumber min={1} max={5} style={{margin:'0px 20px'}}/>
+                    </Form.Item>
+                    <MinusCircleOutlined onClick={() => remove(name)} />
+                  </Space>
+                ))}
+                <Form.Item>
+                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                    Add Answer
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        </div>
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Submit
@@ -135,7 +140,9 @@ function QuestionPage({ selectedId }) {
         </Form.Item>
       </Form>
     </Card>
-    </Layout>
+  </Layout>
+</>
+
   );
 }
   

@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Row, Col, Spin, Form, Button } from 'antd';
 import QuestionHome from '../Question/QuestionHome';
 import { useSelector } from 'react-redux';
+import styles from './styles.js';
 
 function QuestionList({ setSelectedId }) {
   const { questions } = useSelector((state) => state.questions);
-  const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill(0));
+  const [isHovered, setIsHovered] = useState(false);
+  const [selectedAnswers, setSelectedAnswers] = useState(
+    Array(questions.length).fill(0)
+  );
 
   const categoryScores = {}; // Dictionary to store scores for each category
 
@@ -29,7 +33,8 @@ function QuestionList({ setSelectedId }) {
       const answer = question.answers[selectedAnswerIndex];
       if (answer) {
         const category = question.category;
-        categoryScores[category] = (categoryScores[category] || 0) + answer.score;
+        categoryScores[category] =
+          (categoryScores[category] || 0) + answer.score;
       }
     });
 
@@ -45,21 +50,38 @@ function QuestionList({ setSelectedId }) {
       size="middle"
       onFinish={onSubmit}
     >
-      <Row gutter={[48, 32]}>
-        {questions.map((question, index) => (
-          <Col key={question._id} lg={24} xl={12} xxl={8}>
+      {questions.map((question, index) => (
+        <Row
+          key={question._id}
+          gutter={[48, 32]}
+          justify="center"
+          style={styles.row}
+        >
+          <Col span={24}>
             <QuestionHome
               setSelectedId={setSelectedId}
               question={question}
               selectedAnswerIndex={selectedAnswers[index]}
-              onAnswerSelect={(selectedAnswerIndex) => onAnswerSelect(index, selectedAnswerIndex)}
+              onAnswerSelect={(selectedAnswerIndex) =>
+                onAnswerSelect(index, selectedAnswerIndex)
+              }
             />
           </Col>
-        ))}
-      </Row>
-      <Button type="primary" block htmlType="submit">
-        Submit
-      </Button>
+        </Row>
+      ))}
+      <div style={styles.buttonContainer}>
+        <Button
+          style={
+            isHovered
+              ? { ...styles.button, ...styles.buttonHover }
+              : styles.button
+          }
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          Submit
+        </Button>
+      </div>
     </Form>
   );
 }

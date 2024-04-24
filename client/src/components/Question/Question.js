@@ -1,22 +1,29 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Card, Tooltip, Typography, Radio, Redirect ,message} from 'antd';
+import { Card, Tooltip, Typography, Radio, Redirect, message } from 'antd';
 import { DeleteTwoTone, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../actions/categories';
 import { Navigate } from 'react-router-dom';
-import {delteStory} from '../../actions/questions.js'
+import { delteStory } from '../../actions/questions.js';
 import { deleteQuestion } from '../../api/index.js';
+import styles from './styles.js';
+
 
 const { Meta } = Card;
 const { Paragraph } = Typography;
 
-function Question({ question, setSelectedId, onAnswerSelect, setEditId, history }) {
-
+function Question({
+  question,
+  setSelectedId,
+  onAnswerSelect,
+  setEditId,
+  history,
+}) {
   const dispatch = useDispatch();
   const [expand, setExpand] = useState(true);
   const [value, setValue] = useState(0);
   const [redirect, setRedirect] = useState(false); // State to control redirection
-  const [radioValue, setRadioValue] = useState("");  
+  const [radioValue, setRadioValue] = useState('');
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
@@ -67,22 +74,19 @@ function Question({ question, setSelectedId, onAnswerSelect, setEditId, history 
 
   const cardActions = [
     <Tooltip placement="top" title="Edit">
-      <EditOutlined
-        onClick={() => handleEditClick(question._id)}
-      />
+      <EditOutlined onClick={() => handleEditClick(question._id)} />
     </Tooltip>,
     <Tooltip placement="top" title="Delete">
-    <DeleteTwoTone twoToneColor="red"
-      onClick={handleDelete}
-    />
-  </Tooltip>,
+      <DeleteTwoTone twoToneColor="red" onClick={handleDelete} />
+    </Tooltip>,
   ];
 
   return (
     <>
       {/* Redirect to the edit page if redirect is true */}
       {redirect && <Navigate to={`/admin/question/${question._id}`} />}
-      <Card actions={cardActions}>
+      
+      <Card actions={cardActions} style={styles.card}>
         <Meta title={getCategoryName()} />
         <Meta title={question.text} />
         <Paragraph
@@ -100,16 +104,16 @@ function Question({ question, setSelectedId, onAnswerSelect, setEditId, history 
           }}
         >
           <Radio.Group
-  onChange={onChange}
-  value={radioValue} // Make sure value is initially null or undefined
-  style={{ width: '100%' }}
->
-  {question.answers.map((answer, index) => (
-    <Radio key={index} value={index} style={{ marginBottom: '10px' }}>
-      <strong>{answer.text}</strong> - Score: {answer.score}
-    </Radio>
-  ))}
-</Radio.Group>
+            onChange={onChange}
+            value={radioValue} // Make sure value is initially null or undefined
+            style={{ width: '100%' }}
+          >
+            {question.answers.map((answer, index) => (
+              <Radio key={index} value={index} style={{ marginBottom: '10px' }}>
+                <strong>{answer.text}</strong> - Score: {answer.score}
+              </Radio>
+            ))}
+          </Radio.Group>
         </Paragraph>
       </Card>
     </>
