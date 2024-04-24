@@ -34,6 +34,7 @@ const updateQuestion = async (req, res) => {
     }
 
     try {
+        console.log(_id)
         const updatedQuestion = await Question.findByIdAndUpdate(_id, question, { new: true });
         if (!updatedQuestion) {
             return res.status(404).json({ message: "Question not found" });

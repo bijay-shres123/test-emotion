@@ -14,10 +14,10 @@ function QuestionPage(selectedId) {
   const [categories, setCategories] = useState([]);
   const question = useSelector((state) => {
     if (selectedId && Array.isArray(state.questions)) {
-        console.log("hrere")
+      console.log('hrere');
       return state.questions.find((question) => question._id === selectedId);
     } else {
-        console.log("down")
+      console.log('down');
       return null;
     }
   });
@@ -99,9 +99,15 @@ function QuestionPage(selectedId) {
                     name={[name, 'text']}
                     label="Answer Text"
                     rules={[{ required: true }]}
-                    style={{ marginBottom: '8px' }} // Adjust the margin bottom as needed
+                    style={{ marginBottom: '8px' }}
                   >
-                    <Input allowClear />
+                    <Select placeholder="Select an option">
+                      <Select.Option value="Always">Always</Select.Option>
+                      <Select.Option value="Usually">Usually</Select.Option>
+                      <Select.Option value="Sometimes">Sometimes</Select.Option>
+                      <Select.Option value="Rarely">Rarely</Select.Option>
+                      <Select.Option value="Never">Never</Select.Option>
+                    </Select>
                   </Form.Item>
                   <Form.Item
                     {...restField}

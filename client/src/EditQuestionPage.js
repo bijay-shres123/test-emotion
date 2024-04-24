@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Card, Form, Input, Typography, Button, Select, Space, InputNumber } from 'antd';
 import { useDispatch } from 'react-redux';
-import { createQuestion, getQuestions } from './actions/questions.js';
+import { updateQuestion, getQuestions } from './actions/questions.js';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom'; // Import useParams hook
+
 
 const { Title } = Typography;
 
@@ -59,13 +60,14 @@ function EditQuestionPage() {
 
   const [form] = Form.useForm();
   const onSubmit = (formValues) => {
-    dispatch(createQuestion(formValues));
+    // console.log(formValues)
+    dispatch(updateQuestion(id, formValues));
   };
-
   return (
     <Card
       title={<Title level={4}>Edit Question</Title>}
     >
+        
       <Form
         form={form}
         labelCol={{ span: 6 }}
@@ -87,18 +89,30 @@ function EditQuestionPage() {
             ))}
           </Select>
         </Form.Item>
+        <h3>
+            Follow following order to add answers: Always, Usually, Sometimes,
+            Rarely, Never
+          </h3>
+          <h3>Value should limit min:1 to max:5</h3>
         <Form.List name="answers">
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name, ...restField }) => (
                 <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                  <Form.Item
+                 <Form.Item
                     {...restField}
                     name={[name, 'text']}
                     label="Answer Text"
                     rules={[{ required: true }]}
+                    style={{ marginBottom: '8px' }}
                   >
-                    <Input allowClear />
+                    <Select placeholder="Select an option">
+                      <Select.Option value="Always">Always</Select.Option>
+                      <Select.Option value="Usually">Usually</Select.Option>
+                      <Select.Option value="Sometimes">Sometimes</Select.Option>
+                      <Select.Option value="Rarely">Rarely</Select.Option>
+                      <Select.Option value="Never">Never</Select.Option>
+                    </Select>
                   </Form.Item>
                   <Form.Item
                     {...restField}
