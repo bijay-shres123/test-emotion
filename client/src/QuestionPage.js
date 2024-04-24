@@ -1,5 +1,6 @@
 // Question
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styles from './styles.js'
 import {Card, Form, Input, Typography, Button} from "antd";
 import { useDispatch } from 'react-redux';
@@ -11,8 +12,9 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 const {Title} = Typography
 
 
-function QuestionPage() {
+function QuestionPage(selectedId) {
     const [categories, setCategories] = useState([]);
+    const question = useSelector((state)=> selectedId ? state.questions.find(question => question._id === selectedId ):null)
 
   useEffect(() => {
     // Fetch categories data from your backend API
@@ -33,6 +35,12 @@ function QuestionPage() {
   const onSubmit = (formValues) =>{
     dispatch(createQuestion(formValues))
   }
+
+  useEffect(()=>{
+    if(question){
+        form.setFieldValue(question)
+    }
+  },[])
   return (
     <Card
       style = {styles.formCard}

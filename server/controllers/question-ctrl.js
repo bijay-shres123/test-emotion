@@ -1,4 +1,5 @@
 import Question from "../models/QuestionModel.js";
+import mongoose from "mongoose";
 
 const getQuestions = async (req, res) => {
     try {
@@ -24,4 +25,24 @@ const createQuestion = async (req, res) => {
     }
 };
 
-export { getQuestions, createQuestion };
+const updateQuestion = async (req, res) => {
+    const { id: _id } = req.params;
+    const question = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).json({ message: "Invalid ID" });
+    }
+
+    try {
+        const updatedQuestion = await Question.findByIdAndUpdate(_id, question, { new: true });
+        if (!updatedQuestion) {
+            return res.status(404).json({ message: "Question not found" });
+        }
+        res.json(updatedQuestion);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+
+export { getQuestions, createQuestion, updateQuestion };

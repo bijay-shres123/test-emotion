@@ -21,3 +21,12 @@ export const createQuestion = (question) => async (dispatch) =>{
     }
     
 }
+
+export const updateQuestion = (id, updatedQuestion) => async (dispatch) => {
+    try {
+        const { data } = await api.updateQuestion(id, updatedQuestion); // Assuming api.updateQuestion exists and handles the PUT request
+        dispatch({ type: "UPDATE_QUESTION", payload: data });
+    } catch (error) {
+        console.log(error.message);
+    }
+};

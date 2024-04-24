@@ -8,6 +8,7 @@ import {getQuestions} from '../../actions/questions.js'
 
 const {Sider,Content} = Layout;
 const Home = () =>{
+    
     const dispatch = useDispatch();
 
     useEffect(()=>{
@@ -15,9 +16,9 @@ const Home = () =>{
     },[dispatch])
     return(
         <Layout style = {styles.layout}>
-            <Sider width={400}>
+            {/* <Sider width={400}>
                 <StoryForm/>
-            </Sider>
+            </Sider> */}
             <Content style = {styles.content}>
                 <QuestionList/>
             </Content>
