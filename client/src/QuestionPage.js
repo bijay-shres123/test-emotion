@@ -7,8 +7,10 @@ import { useDispatch } from 'react-redux';
 import { createQuestion } from './actions/questions.js';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import Navbar from './components/Layout/Navbar.js';
-const { Title } = Typography;
 
+
+const { Title } = Typography;
+const {Footer}= Layout;
 function QuestionPage({ selectedId }) {
   // Destructure props to get selectedId
   const [categories, setCategories] = useState([]);
@@ -69,8 +71,7 @@ function QuestionPage({ selectedId }) {
     <Card title={<Title level={4}>Add a Question</Title>} style={styles.formCard}>
       <Form
         form={form}
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 16 }}
+        
         layout="horizontal"
         onFinish={onSubmit}
       >
@@ -93,7 +94,7 @@ function QuestionPage({ selectedId }) {
         <div style={styles.formList}> {/* Fixed typo in 'style' */}
           <h3>Follow this order to add answers: Always, Usually, Sometimes, Rarely, Never</h3>
           <h3>Value should be between 1 and 5</h3>
-          <Form.List name="answers" style={{ padding: '5px' }}>
+          <Form.List name="answers" style={styles.formList}>
             {(fields, { add, remove }) => (
               <>
                 {fields.map(({ key, name, ...restField }) => (
@@ -124,8 +125,8 @@ function QuestionPage({ selectedId }) {
                     <MinusCircleOutlined onClick={() => remove(name)} />
                   </Space>
                 ))}
-                <Form.Item>
-                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                <Form.Item >
+                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />} style={styles.formList}>
                     Add Answer
                   </Button>
                 </Form.Item>
@@ -133,14 +134,17 @@ function QuestionPage({ selectedId }) {
             )}
           </Form.List>
         </div>
-        <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+        <Form.Item style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <Button type="primary" htmlType="submit" style={{ fontSize: '20px', padding: '0 30px' }}>
             Submit
           </Button>
         </Form.Item>
       </Form>
     </Card>
   </Layout>
+  <Footer style={styles.footer}>
+                <span>©2024 MindWell</span>
+            </Footer>
 </>
 
   );

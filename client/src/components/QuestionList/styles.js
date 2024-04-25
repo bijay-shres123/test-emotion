@@ -25,6 +25,21 @@ const styles = {
       buttonHover: {
         background: '#7FB3D5', // Change background color on hover
       },
+      result: {
+        
+        background: '#fff',
+        borderRadius: '2px',
+        padding: '20px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        marginTop:'20px',
+        marginBottom: '20px',
+        fontSize: '16px'
+      },
+      cell: {
+        padding: '10px',
+        textAlign: 'center',
+        border: '1px solid #ddd'
+      }
 }
 
 export default styles

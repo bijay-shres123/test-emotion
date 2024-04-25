@@ -14,8 +14,9 @@ const styles = {
       
     },
     formList:{
-      textAlign:"center",
+      
       margin: "16px auto",
+      
     },
     header: {
       color: "#fff",

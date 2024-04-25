@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import { Row, Col, Spin } from "antd";
+import { Row, Col, Spin, Layout } from "antd";
 import Question from '../Question';
 import { useSelector } from "react-redux";
 import { getQuestions } from '../../actions/questions.js';
@@ -8,7 +8,7 @@ import Navbar from '../Layout/Navbar.js';
 import { Typography } from 'antd';
 
 const { Title } = Typography;
-
+const {Footer}= Layout;
 function QuestionListAdmin({ setSelectedId }) {
   const [editId, setEditId]= useState(null);
   const dispatch = useDispatch();
@@ -42,13 +42,15 @@ function QuestionListAdmin({ setSelectedId }) {
           justify="center" // Align items horizontally to the center
           align="middle" // Align items vertically to the middle
         >
-          <Col xs={24} sm={24} md={12} lg={8}>
+          <Col >
             <Question setSelectedId={setSelectedId} question={question} setEditId={setEditId} />
           </Col>
           {/* Add more columns if needed */}
         </Row>
       ))}
-      
+      <Footer style={{color: "white",textAlign: "center",background:"#7FB3D5",}}>
+                <span>©2024 MindWell</span>
+            </Footer>
     </div>
   );
 }

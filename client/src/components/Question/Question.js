@@ -4,7 +4,6 @@ import { DeleteTwoTone, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../actions/categories';
 import { Navigate } from 'react-router-dom';
-import { delteStory } from '../../actions/questions.js';
 import { deleteQuestion } from '../../api/index.js';
 import styles from './styles.js';
 
