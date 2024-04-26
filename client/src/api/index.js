@@ -1,16 +1,27 @@
 import axios from "axios";
 
-const urlstory  = "http://localhost:5001/stories"
+const api  =  axios.create({baseURL:"http://localhost:5001/"})
 
-export const fetchStories =()=> axios.get(urlstory)
-export const createStory =(story)=> axios.post(urlstory, story)
+api.interceptors.request.use((req) => {
+    // Check if there's a profile object in localStorage
+    const profile = JSON.parse(localStorage.getItem("profile"));
+  
+    // If profile exists and contains a token, add Authorization header
+    if (profile && profile.token) {
+      req.headers.Authorization = `Bearer ${profile.token}`;
+    }
+  
+    return req;
+  });
 
-const urlcategory  = "http://localhost:5001/categories"
-export const fetchCategories =()=> axios.get(urlcategory)
-export const createCategory =(category)=> axios.post(urlcategory, category)
+export const fetchCategories =()=> api.get("/categories")
+export const createCategory =(category)=> api.post("/categories", category)
 
-const urlquestion  = "http://localhost:5001/questions"
-export const fetchQuestions =()=> axios.get(urlquestion)
-export const createQuestion =(question)=> axios.post(urlquestion, question)
-export const updateQuestion =(id,question)=> axios.patch(`${urlquestion}/${id}`, question)
-export const deleteQuestion =(id)=> axios.delete(`${urlquestion}/${id}`);
+
+export const fetchQuestions =()=> api.get("/questions")
+export const createQuestion =(question)=> api.post("/questions", question)
+export const updateQuestion =(id,question)=> api.patch(`/questions/${id}`, question)
+export const deleteQuestion =(id)=> api.delete(`/questions/${id}`);
+
+export const login = (formValues) => api.post("/users/login", formValues);
+export const signup = (formValues) => api.post("/users/signup", formValues);

@@ -79,21 +79,9 @@ function Question({
       {redirect && <Navigate to={`/admin/question/${question._id}`} />}
       <Card actions={cardActions} style={styles.card}>
         <Meta title={getCategoryName()} />
-        <Meta title={question.text} />
-        <Paragraph
-          style={{ margin: 0 }}
-          ellipsis={{
-            rows: 2,
-            expandable: true,
-            symbol: 'more',
-            onExpand: () => {
-              setExpand(true);
-            },
-            onEllipsis: () => {
-              setExpand(false);
-            },
-          }}
-        >
+        <h2>{question.text} </h2>
+        
+       
           <Radio.Group
             onChange={onChange}
             value={radioValue} // Make sure value is initially null or undefined
@@ -105,7 +93,7 @@ function Question({
               </Radio>
             ))}
           </Radio.Group>
-        </Paragraph>
+        
       </Card>
     </>
   );

@@ -1,10 +1,16 @@
 import * as api from '../api'
+import {
+    FETCH_ALL_QUESTIONS,
+    CREATE_QUESTION,
+    UPDATE_QUESTION,
+    DELETE_QUESTION_REQUEST,
+} from '../constants/actionType';
 
 export const getQuestions = () => async (dispatch) =>{
 
     try{
         const {data} = await api.fetchQuestions();
-        const action ={type:"FETCH_ALL_QUESTIONS",payload:data};
+        const action ={type:FETCH_ALL_QUESTIONS,payload:data};
         dispatch(action)
     }catch(error){
         console.log(error.message)
@@ -15,7 +21,7 @@ export const createQuestion = (question) => async (dispatch) =>{
 
     try{
         const {data} = await api.createQuestion(question)
-        dispatch({type:"CREATE_QUESTION",payload:data})
+        dispatch({type:CREATE_QUESTION,payload:data})
     }catch(error){
         console.log(error.message)
     }
@@ -26,7 +32,7 @@ export const updateQuestion = (id, updatedQuestion) => async (dispatch) => {
     try {
         const { data } = await api.updateQuestion(id, updatedQuestion); // Assuming api.updateQuestion exists and handles the PUT request
         
-        dispatch({ type: "UPDATE_QUESTION", payload: data });
+        dispatch({ type: UPDATE_QUESTION, payload: data });
     } catch (error) {
         
         console.log(error.message);
@@ -37,7 +43,7 @@ export const updateQuestion = (id, updatedQuestion) => async (dispatch) => {
 export const deleteQuestionAction = (id) => async (dispatch) => {
   try {
     // Dispatch an action to indicate that the delete operation has started
-    dispatch({ type: 'DELETE_QUESTION_REQUEST' });
+    dispatch({ type: DELETE_QUESTION_REQUEST });
 
     // Call the deleteQuestion API function to delete the question
     await api.deleteQuestion(id);

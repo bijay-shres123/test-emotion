@@ -5,8 +5,11 @@ import mongoose from 'mongoose'; // Import mongoose
 import storyRoutes from './routes/stories.js'
 import categoryRoutes from './routes/categories.js'
 import questionRoutes from './routes/questions.js'
+import userRoutes from './routes/users.js'
+import dotenv from "dotenv"
 
 const app = express();
+dotenv.config();
 
 app.use(bodyParser.json({limit: "32mb", extended: true }))
 app.use(bodyParser.urlencoded({limit: "32mb", extended: true }))
@@ -18,10 +21,14 @@ app.use("/stories",storyRoutes)
 app.use("/categories",categoryRoutes)
 //Route for QuestionRoutes
 app.use("/questions",questionRoutes)
+//Route for Users
+app.use("/users", userRoutes);
 
-const MONGO_URI = "mongodb+srv://user2024:test123@cluster0.hsmnvk0.mongodb.net/TestQuiz?retryWrites=true&w=majority&appName=Cluster0"
+
+const MONGO_URI = process.env.MONGO_URI;
 
 const PORT = process.env.PORT || 5001;
+
 
 const connectDB = async() =>{
     try{

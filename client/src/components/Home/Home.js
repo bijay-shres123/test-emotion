@@ -1,7 +1,6 @@
 import React, {useEffect} from "react"
 import { useDispatch } from "react-redux"
 import QuestionList from "../QuestionList"
-import StoryForm from "../StoryForm"
 import {Layout} from "antd"
 import styles from './styles.js'
 import {getQuestions} from '../../actions/questions.js'
