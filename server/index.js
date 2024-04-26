@@ -15,6 +15,8 @@ app.use(bodyParser.json({limit: "32mb", extended: true }))
 app.use(bodyParser.urlencoded({limit: "32mb", extended: true }))
 app.use(cors())
 
+
+app.get("/",(req,res)=>{res.send('Welcome to Mindwell API')})
 //Route for storyRoute
 app.use("/stories",storyRoutes)
 //Route for categoryRoutes
