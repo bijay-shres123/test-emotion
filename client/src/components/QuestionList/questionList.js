@@ -81,6 +81,14 @@ function QuestionList({ setSelectedId }) {
     console.log('Category Total Scores:', updatedCategoryTotalScores);
     setShowMessage(true);
   };
+  
+  if (!Array.isArray(questions) || questions.length === 0) {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <Form

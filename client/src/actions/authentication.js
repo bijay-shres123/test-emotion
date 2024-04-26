@@ -23,7 +23,7 @@ const login = (formValues, navigate) => async dispatch => {
             type: AUTHENTICATION,
             data: data
         });
-        navigate("/");
+        navigate("/admin/questionlist");
     } catch (error) {
         console.log(error);
     }
